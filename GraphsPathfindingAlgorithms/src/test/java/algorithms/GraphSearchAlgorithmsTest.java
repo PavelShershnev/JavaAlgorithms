@@ -18,6 +18,7 @@ public class GraphSearchAlgorithmsTest {
     static NodeWeighted sourceNode = null;
     static NodeWeighted destNode = null;
     static LinkedList<NodeWeighted> correctAnsw;
+    double memoryBefore;
 
     @BeforeAll
     public static void init(){
@@ -78,6 +79,16 @@ public class GraphSearchAlgorithmsTest {
     public void init(TestInfo testInfo) {
         String methodName = testInfo.getTestMethod().orElseThrow().getName();
         System.out.println("Method: " + methodName);
+        System.gc();
+        Runtime runtime = Runtime.getRuntime();
+        memoryBefore = (double)(runtime.totalMemory() - runtime.freeMemory());
+    }
+
+    @AfterEach
+    public void printMemoryUsage (){
+        Runtime runtime = Runtime.getRuntime();
+        double memoryAfter = (double)(runtime.totalMemory() - runtime.freeMemory());
+        System.out.printf("\nMemory used: %.2f KBytes", (memoryAfter-memoryBefore)/1024);
     }
 
 
